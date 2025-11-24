@@ -1,0 +1,9 @@
+{
+	"name": "df-datafactory-aditi",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2515d61f-5698-4e32-986e-51114ba243d9",
+		"tenantId": "cff47f6c-989c-4137-a8f5-1efef51da173"
+	}
+}
