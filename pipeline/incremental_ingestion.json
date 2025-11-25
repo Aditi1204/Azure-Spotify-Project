@@ -24,21 +24,41 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": {
-							"value": "SELECT * from @{pipeline().parameters.schema}.{pipeline().parameters.table} WHERE @{pipeline().parameters.cdc_col}>",
+						"sqlReaderQuery": {
+							"value": "SELECT * from @{pipeline().parameters.schema}.@{pipeline().parameters.table} WHERE @{pipeline().parameters.cdc_col}>'@{activity('Last_cdc').output.value[0].cdc}'",
 							"type": "Expression"
 						},
-						"partitionSettings": {
-							"partitionUpperBound": "",
-							"partitionLowerBound": ""
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "AzureSql",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "parquet_dynamic",
 						"type": "DatasetReference"
 					}
 				]
