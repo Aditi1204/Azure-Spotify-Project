@@ -211,10 +211,15 @@
 							"typeProperties": {
 								"source": {
 									"type": "JsonSource",
-									"additionalColumns": {
-										"type": "Expression",
-										"value": "@array(activity('max_cdc').output.resultSets[0].rows[0].cdc)\n"
-									},
+									"additionalColumns": [
+										{
+											"name": "cdc",
+											"value": {
+												"value": "@activity('max_cdc').output.resultSets[0].rows[0].cdc",
+												"type": "Expression"
+											}
+										}
+									],
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
